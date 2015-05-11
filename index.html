@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <style>
+    #show-picture {
+      border: 1px solid red;
+      width: 100px;
+      min-height: 10px;
+    }
+  </style>
+
+  <script src="/bower_components/pouchdb/dist/pouchdb.min.js"></script>
+  <script src="/bower_components/mithril/mithril.min.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var takePicture = document.querySelector("#take-picture");
+      var showPicture = document.querySelector("#show-picture");
+      takePicture.onchange = function (event) {
+          // Get a reference to the taken picture or chosen file
+          var files = event.target.files,
+              file;
+          if (files && files.length > 0) {
+              file = files[0];
+              showImage(file)
+          }
+      };
+
+      function showImage (file) {
+        try {
+          // Get window.URL object
+          var URL = window.URL || window.webkitURL;
+          // Create ObjectURL
+          var imgURL = URL.createObjectURL(file);
+          // Set img src to ObjectURL
+          showPicture.src = imgURL;
+          // Revoke ObjectURL
+          URL.revokeObjectURL(imgURL);
+        }
+        catch (e) {
+          try {
+            // Fallback if createObjectURL is not supported
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {
+              showPicture.src = event.target.result;
+            };
+            fileReader.readAsDataURL(file);
+          }
+          catch (e) {
+            // Display error message
+            var error = document.querySelector("#error");
+            if (error) {
+              error.innerHTML = "Neither createObjectURL or FileReader are supported";
+            }
+          }
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <h1>Burbank</h1>
+  <input type="file" id="take-picture" accept="image/*">
+  <img id="show-picture"/>
+  <div id="error"></div>
+</body>
+</html>
