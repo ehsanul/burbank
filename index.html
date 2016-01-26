@@ -4,69 +4,86 @@
   <meta charset="utf-8">
   <title>Burbank</title>
 
+  <link rel="stylesheet" src="./src/components/pure/pure-min.css"/>
   <style>
-    #show-picture {
-      border: 1px solid red;
-      width: 100px;
-      min-height: 10px;
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: sans-serif;
+      margin: 0; /* TODO: reset.css/normalize.css */
+    }
+    #burbank {
+      position: absolute;
+      top: 0px;
+      bottom: 40px;
+      left: 0px;
+      width: 100%;
+      overflow: hidden;
+    }
+    /* TODO flex-box for full height, leave space at bottom for inputs */
+    .message-list {
+      margin: 0;
+      margin-right: -15px; /* attempt to hide the scrollbar */
+      padding: 0 25px 0 10px; /* right padding must compensate for negative margin */
+      height: 100%;
+      overflow: scroll;
+    }
+    .message {
+      list-style: none;
+      display: block;
+      border: 1px solid #ddd;
+      padding: 10px;
+      width: 90%;
+      border-radius: 3px;
+      margin-bottom: 5px
+    }
+    .message:nth-child(even) {
+      margin-left: 10%;
+      text-align: right;
+    }
+    .message img {
+      max-width: 100%;
+      max-height: 400px;
+    }
+
+    .message-send-container {
+      position: fixed;
+      bottom: 0;
+      height: 40px;
+      width: 100%;
+      border-top: 1px solid #ddd;
+    }
+    .message-send-container * {
+      height: 40px;
+    }
+
+    /* TODO: use flex instead of float/absolute */
+    .message-send-container .upload {
+      float: left;
+      width: 40px;
+    }
+    .message-send-container .message-content-container {
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      top: 0;
+      bottom: 0;
+    }
+    .message-send-container .message-content {
+      width: 100%;
+    }
+    .message-send-container .send-message {
+      float: right;
+      width: 40px;
     }
   </style>
-
-  <script src="/src/components/pouchdb/dist/pouchdb.min.js"></script>
-  <script src="/src/components/mithril/mithril.min.js"></script>
-  <script src="/src/app.js"></script>
-  
-  <!--script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var takePicture = document.querySelector("#take-picture");
-      var showPicture = document.querySelector("#show-picture");
-      takePicture.onchange = function (event) {
-          // Get a reference to the taken picture or chosen file
-          var files = event.target.files,
-              file;
-          if (files && files.length > 0) {
-              file = files[0];
-              showImage(file)
-          }
-      };
-
-      function showImage (file) {
-        try {
-          // Get window.URL object
-          var URL = window.URL || window.webkitURL;
-          // Create ObjectURL
-          var imgURL = URL.createObjectURL(file);
-          // Set img src to ObjectURL
-          showPicture.src = imgURL;
-          // Revoke ObjectURL
-          URL.revokeObjectURL(imgURL);
-        }
-        catch (e) {
-          try {
-            // Fallback if createObjectURL is not supported
-            var fileReader = new FileReader();
-            fileReader.onload = function (event) {
-              showPicture.src = event.target.result;
-            };
-            fileReader.readAsDataURL(file);
-          }
-          catch (e) {
-            // Display error message
-            var error = document.querySelector("#error");
-            if (error) {
-              error.innerHTML = "Neither createObjectURL or FileReader are supported";
-            }
-          }
-        }
-      }
-    });
-  </script-->
 </head>
 
 <body>
-  <h1>Burbank</h1>
-  <input type="file" id="take-picture" accept="image/*">
-  <img id="show-picture"/>
-  <div id="error"></div>
+  <script src="/src/components/bluebird/js/browser/bluebird.min.js"></script>
+  <script src="/src/components/pouchdb/dist/pouchdb.min.js"></script>
+  <script src="/src/components/mithril/mithril.min.js"></script>
+  <script src="/src/app.js"></script>
 </body>
 </html>

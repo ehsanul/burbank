@@ -14,7 +14,10 @@
     "tests"
   ],
   "dependencies": {
+    "bluebird": "~2.9.25",
     "pouchdb": "~3.5.0",
-    "mithril": "~0.2.0"
+    "pouchdb.d.ts": "AGBrown/pouchdb.d.ts",
+    "mithril": "~0.2.0",
+    "pure": "~0.6.0"
   }
 }
